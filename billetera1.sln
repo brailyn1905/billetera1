@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35506.116 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "capa-datos", "billetera1\capa-datos.csproj", "{D9818F2C-3F84-49C2-B766-7D26FC904DEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "capa-negocios", "ClassLibrary1\capa-negocios.csproj", "{279DBD0A-2580-4197-A267-913244DC4B55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "capa-presentacion", "WinFormsApp1\capa-presentacion.csproj", "{985F2BBA-3D5A-4D8A-83A3-C405121D1E94}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D9818F2C-3F84-49C2-B766-7D26FC904DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9818F2C-3F84-49C2-B766-7D26FC904DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9818F2C-3F84-49C2-B766-7D26FC904DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9818F2C-3F84-49C2-B766-7D26FC904DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{279DBD0A-2580-4197-A267-913244DC4B55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{279DBD0A-2580-4197-A267-913244DC4B55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{279DBD0A-2580-4197-A267-913244DC4B55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{279DBD0A-2580-4197-A267-913244DC4B55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{985F2BBA-3D5A-4D8A-83A3-C405121D1E94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{985F2BBA-3D5A-4D8A-83A3-C405121D1E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{985F2BBA-3D5A-4D8A-83A3-C405121D1E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{985F2BBA-3D5A-4D8A-83A3-C405121D1E94}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
