@@ -6,20 +6,20 @@ using Microsoft.VisualBasic;
 
 namespace capaNegocios
 {
-    public abstract class Transaccion
+    public  class Transaccion
     {
         public int Id{  get; set; }
         public decimal Monto{  get; set; }
         public DateTime Fecha {  get; set; }
         public string Motivo {  get; set; }
-        public   abstract string Tipo { get; }
+        public virtual string Tipo { get; }
 
-
+        //metodo para validar saldo
         public virtual bool ValidarSaldo(decimal saldoActual)
         {
             return saldoActual >= Monto;
         }
-
+        //metodo para registrar la operacion 
         public void RegistrarOperacion()
         {
             Console.WriteLine($"transacción registrada: {Monto} - {Motivo} - {Fecha.ToShortDateString()}");
@@ -27,22 +27,27 @@ namespace capaNegocios
 
 
     } 
+    //primera clase derivada ingreso
     public class Ingreso : Transaccion
     {
         public override string Tipo => "Ingreso";
         
-      
+      //
         public override bool ValidarSaldo(decimal saldoActual)
         {
             return true; // Siempre válido porque es un ingreso
         }
 
+        
+
 
     }
-
+    //segunda clase deribada gasto
     public class Gasto : Transaccion
     {
         public override string Tipo => "gasto";
+
+        //le agregamos una condicion para ver si el saldo de los ingresos es sificiente 
         public override bool ValidarSaldo(decimal saldoActual)
         {
             if (saldoActual < Monto)

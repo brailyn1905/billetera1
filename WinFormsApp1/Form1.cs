@@ -10,6 +10,7 @@ namespace WinFormsApp1
         public Form1()
         {
             InitializeComponent();
+            textSaldoActual.Text = ObtenerSaldoActual().ToString("N2");
 
         }
 
@@ -20,10 +21,10 @@ namespace WinFormsApp1
 
         private void registrar_Click(object sender, EventArgs e)
         {
-            
+
             try
             {
-                // ----------- VALIDACIÓN DEL MONTO ----------- 
+
                 // Se verifica que el valor ingresado en textmonto sea un número válido.
                 // En caso de error, se muestra un mensaje y se detiene el proceso.
                 if (!decimal.TryParse(textmonto.Text, out decimal monto))
@@ -32,16 +33,16 @@ namespace WinFormsApp1
                     return; // Se detiene la ejecución del método si hay error.
                 }
 
-                // ----------- VALIDACIÓN DE LA FECHA ----------- 
+
                 // Se verifica que el valor ingresado en textfecha sea una fecha válida.
                 // Si el usuario ingresa un formato incorrecto, se muestra un mensaje de error.
-                if (!DateTime.TryParse(textfecha.Text, out DateTime fecha))
+                if (!DateTime.TryParse(dateTimefecha.Text, out DateTime fecha))
                 {
                     MessageBox.Show("La fecha ingresada no es válida. Usa un formato correcto (dd/mm/aaaa).");
                     return;
                 }
 
-                // ----------- VALIDACIÓN DEL TIPO DE TRANSACCIÓN ----------- 
+
                 // Se verifica que el usuario haya seleccionado un tipo (Ingreso o Gasto).
                 // Si no se ha seleccionado ninguna opción, se muestra un mensaje de advertencia.
                 if (cmbtipo.SelectedItem == null)
@@ -55,7 +56,7 @@ namespace WinFormsApp1
 
                 Transaccion transaccion; // Se declara la variable para almacenar la instancia de la transacción.
 
-                // ----------- CREACIÓN DE LA INSTANCIA DE TRANSACCIÓN ----------- 
+
                 // Se crea una instancia de la clase adecuada según el tipo de transacción seleccionado.
                 // Si es un "Ingreso", se instancia la clase Ingreso.
                 // Si es un "Gasto", se instancia la clase Gasto.
@@ -63,14 +64,14 @@ namespace WinFormsApp1
                     ? new Ingreso { Monto = monto, Motivo = motivo, Fecha = fecha }
                     : new Gasto { Monto = monto, Motivo = motivo, Fecha = fecha };
 
-                // ----------- OBTENCIÓN Y VALIDACIÓN DEL SALDO ACTUAL ----------- 
+
                 // Se obtiene el saldo actual de la cuenta llamando al método ObtenerSaldoActual().
                 decimal saldoActual = ObtenerSaldoActual();
 
                 // Se verifica si el saldo es suficiente para realizar la transacción.
                 if (transaccion.ValidarSaldo(saldoActual))
                 {
-                    // ----------- REGISTRO DE LA TRANSACCIÓN ----------- 
+
                     // Si el saldo es suficiente, se inserta la transacción en la base de datos.
                     TransaccionDatos datos = new TransaccionDatos();
                     datos.InsertarTransaccion(transaccion);
@@ -86,7 +87,7 @@ namespace WinFormsApp1
             }
             catch (Exception ex)
             {
-                // ----------- MANEJO DE ERRORES ----------- 
+
                 // Se captura cualquier excepción que ocurra durante la ejecución del código.
                 // Se muestra un mensaje de error detallando la causa del fallo.
                 MessageBox.Show("Error al registrar la transacción: " + ex.Message);
@@ -94,29 +95,48 @@ namespace WinFormsApp1
             Rellenar();
         }
 
-        // ----------- MÉTODO PARA OBTENER EL SALDO ACTUAL ----------- 
+
         // Este método debería consultar la base de datos para obtener el saldo real.
         private decimal ObtenerSaldoActual()
         {
-            // Simulación de saldo actual (debería implementarse consulta a la base de datos).
-            return 1000m; // Valor de ejemplo.
-        }
+            decimal saldo = 0m;
 
-        private void conexion_Click(object sender, EventArgs e)
-        {
-            try
+            string cadenaConexion = "Server=.;Database= Billetera4;Integrated Security=true" + " ;TrustServerCertificate=True;";
+            string consulta = "SELECT Tipo, Monto FROM transaccion";
+
+            using (SqlConnection conexion = new SqlConnection(cadenaConexion))
             {
-                using (SqlConnection conn = new SqlConnection(new conexionDatos().Conexion))
+                SqlCommand comando = new SqlCommand(consulta, conexion);
+
+                try
                 {
-                    conn.Open(); // Abre la conexión
-                    MessageBox.Show("Conectado a la base de datos: " + conn.Database);
+                    conexion.Open();
+                    SqlDataReader reader = comando.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        string tipo = reader["Tipo"].ToString();
+                        decimal monto = Convert.ToDecimal(reader["Monto"]);
+
+                        if (tipo == "Ingreso")
+                            saldo += monto;
+                        else if (tipo == "Gasto")
+                            saldo -= monto;
+                    }
+
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Error al obtener el saldo actual: " + ex.Message);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error de conexión: " + ex.Message);
-            }
+
+            return saldo;
+
         }
+
+       
         public void Rellenar()
         {
             string consulta = "SELECT * FROM transaccion";
@@ -130,10 +150,11 @@ namespace WinFormsApp1
                 dataGridView1.DataSource = dt;
             }
 
+            textSaldoActual.Text = "Saldo actual: $" + ObtenerSaldoActual().ToString("N2");
 
         }
 
-           
+
         private void Form1_Load(object sender, EventArgs e)
         {
             string consulta = "SELECT * FROM transaccion";
@@ -146,6 +167,25 @@ namespace WinFormsApp1
                 adapter.Fill(dt);
                 dataGridView1.DataSource = dt;
             }
+        }
+
+        private void btnlimpiar_Click(object sender, EventArgs e)
+        {
+            textmonto.Clear();
+            
+            textmotivo.Clear();
+
+
+        }
+
+        private void textSaldoActual_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textfecha_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 
