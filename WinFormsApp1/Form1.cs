@@ -136,7 +136,7 @@ namespace WinFormsApp1
 
         }
 
-       
+        //esto es para que el datagridview se muestren los datos que se estan almacenado en l
         public void Rellenar()
         {
             string consulta = "SELECT * FROM transaccion";
@@ -168,13 +168,13 @@ namespace WinFormsApp1
                 dataGridView1.DataSource = dt;
             }
         }
-
+        //boton para limpiar el formulario
         private void btnlimpiar_Click(object sender, EventArgs e)
         {
             textmonto.Clear();
-            
             textmotivo.Clear();
-
+            cmbtipo.SelectedIndex = -1;
+            dateTimefecha.Value = DateTime.Today;//se restablece la fecha al día actual
 
         }
 

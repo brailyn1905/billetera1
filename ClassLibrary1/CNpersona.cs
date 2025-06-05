@@ -6,6 +6,8 @@ using Microsoft.VisualBasic;
 
 namespace capaNegocios
 {
+    // clase madre 
+    
     public  class Transaccion
     {
         public int Id{  get; set; }
